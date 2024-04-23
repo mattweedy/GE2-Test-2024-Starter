@@ -18,7 +18,7 @@ func draw_gizmo():
 	var angle = start_angle
 	for i in range(length):
 		var size = base_size + sin(angle) * multiplier
-		var position = Vector3(i, 0, 0)
+		var position = Vector3(i * size, 0, 0)
 		draw_cube(position, Vector3(size, size, size))
 		angle += 2 * PI * frequency / length
 
@@ -28,16 +28,19 @@ func draw_cube(position, size):
 	cube.mesh.size = size
 	cube.transform.origin = position
 	add_child(cube)
+	print("Drawing cube at: ", position, " with size ", size)
 
 func _ready():
 	if not Engine.is_editor_hint():
+		print("Creating creature...")
 		create_creature()
 	
 func create_creature():
 	var angle = start_angle
+	var previous_segment = self
 	for i in range(length):
 		var size = base_size + sin(angle) * multiplier
-		var position = Vector3(i, 0, 0)
+		var position = Vector3(i * size, 0, 0)
 		var segment
 		if i == 0:
 			segment = head_scene.instantiate()
@@ -45,7 +48,8 @@ func create_creature():
 		else:
 			segment = body_scene.instantiate()
 			segment.size = Vector3(size, size, size)
+		previous_segment.add_child(segment)
 		segment.transform.origin = position
-		add_child(segment)
+		previous_segment = segment
 		angle += 2 * PI * frequency / length
-
+		print("Segment added at: ", position, " with size ", size)
