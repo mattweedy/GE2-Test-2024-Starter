@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://dlfgt0v1edcv2"]
+
+[ext_resource type="Script" path="res://behaviors/Boid.gd" id="1_71qmh"]
+[ext_resource type="Script" path="res://behaviors/Harmonic.gd" id="2_xgb48"]
+[ext_resource type="Script" path="res://behaviors/NoiseWander.gd" id="3_2aoho"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k0o2m"]
+
+[node name="Boid" type="CharacterBody3D"]
+script = ExtResource("1_71qmh")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+
+[node name="node (harmonic)" type="Node3D" parent="."]
+script = ExtResource("2_xgb48")
+
+[node name="Node (noise wander)" type="Node3D" parent="."]
+script = ExtResource("3_2aoho")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_k0o2m")

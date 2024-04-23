@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://ddo57k5cygua2"]
+
+[node name="CSGBox3D" type="CSGBox3D"]
