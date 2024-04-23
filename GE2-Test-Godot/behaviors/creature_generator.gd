@@ -10,7 +10,7 @@ extends Node3D
 var head_scene = preload("res://head_scene.tscn")
 var body_scene = preload("res://body_scene.tscn")
 
-func _process(delta):
+func _process(_delta):
 	if Engine.is_editor_hint():
 		pass
 
@@ -31,7 +31,21 @@ func draw_cube(position, size):
 
 func _ready():
 	if not Engine.is_editor_hint():
-		pass
-		# create_creature()
+		create_creature()
 	
+func create_creature():
+	var angle = start_angle
+	for i in range(length):
+		var size = base_size + sin(angle) * multiplier
+		var position = Vector3(i, 0, 0)
+		var segment
+		if i == 0:
+			segment = head_scene.instantiate()
+			segment.get_node("CSGBox3D").size = Vector3(size, size, size)
+		else:
+			segment = body_scene.instantiate()
+			segment.size = Vector3(size, size, size)
+		segment.transform.origin = position
+		add_child(segment)
+		angle += 2 * PI * frequency / length
 
