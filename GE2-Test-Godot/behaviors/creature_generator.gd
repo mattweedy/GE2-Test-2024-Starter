@@ -18,7 +18,7 @@ func draw_gizmo():
 	var angle = start_angle
 	for i in range(length):
 		var size = base_size + sin(angle) * multiplier
-		var position = Vector3(i * size, 0, 0)
+		var position = Vector3(i * 0.5, 0, 0)
 		draw_cube(position, Vector3(size, size, size))
 		angle += 2 * PI * frequency / length
 
@@ -32,24 +32,38 @@ func draw_cube(position, size):
 
 func _ready():
 	if not Engine.is_editor_hint():
-		print("Creating creature...")
 		create_creature()
 	
 func create_creature():
+	print("Creating creature...")
 	var angle = start_angle
 	var previous_segment = self
+	
+	#var head_segment = head_scene.instantiate()
+	#var head_box = head_segment.get_node("CSGBox3D")
+	#head_box.size = Vector3(base_size, base_size, base_size)
+	#add_child(head_segment)
+	
 	for i in range(length):
 		var size = base_size + sin(angle) * multiplier
-		var position = Vector3(i * size, 0, 0)
+		var position = Vector3(i * 0.5, 0, 0)
 		var segment
 		if i == 0:
 			segment = head_scene.instantiate()
-			segment.get_node("CSGBox3D").size = Vector3(size, size, size)
+			print("Head segment added")	
 		else:
 			segment = body_scene.instantiate()
-			segment.size = Vector3(size, size, size)
+			var segment_box = segment.get_node("CSGBox3D")
+			segment_box.size = Vector3(size, size, size)
 		previous_segment.add_child(segment)
 		segment.transform.origin = position
 		previous_segment = segment
+		print("Segment added at:", position, "with size:", size)
 		angle += 2 * PI * frequency / length
-		print("Segment added at: ", position, " with size ", size)
+
+func _physics_process(delta):
+	for i in range(get_child_count()):
+		var placeholder = get_child(i)
+		if placeholder.get_child_count() > 0:
+			var segment = placeholder.get_child(0)
+			segment.global_transform.origin = placeholder.global_transform.origin
