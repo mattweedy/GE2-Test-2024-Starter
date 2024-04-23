@@ -8,6 +8,7 @@
 
 [node name="Boid" type="CharacterBody3D"]
 script = ExtResource("1_71qmh")
+pause = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 

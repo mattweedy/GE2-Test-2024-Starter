@@ -12,7 +12,7 @@ var body_scene = preload("res://body_scene.tscn")
 
 func _process(_delta):
 	if Engine.is_editor_hint():
-		pass
+		draw_gizmo()
 
 func draw_gizmo():
 	var angle = start_angle
